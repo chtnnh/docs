@@ -1,0 +1,305 @@
+---
+title: 'Advanced Schema Examples'
+description: 'Complex schema patterns for specialized use cases'
+---
+
+## Academic Paper Schema
+
+A comprehensive schema for extracting structured data from academic papers:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "paper": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Title of the paper"
+        },
+        "abstract": {
+          "type": "string",
+          "description": "Abstract of the paper"
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {"type": "string"},
+              "affiliation": {"type": "string"},
+              "contributions": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "Conceptualization",
+                    "Methodology",
+                    "Writing",
+                    "Review"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": {"type": "string"},
+              "content": {"type": "string"},
+              "figures": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "caption": {"type": "string"},
+                    "description": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "references": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "authors": {
+                "type": "array",
+                "items": {"type": "string"}
+              },
+              "title": {"type": "string"},
+              "year": {"type": "number"},
+              "source": {"type": "string"}
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+## Legal Contract Schema
+
+An advanced schema for processing legal documents with nested structures:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "contract": {
+      "type": "object",
+      "properties": {
+        "parties": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {"type": "string"},
+              "role": {
+                "type": "string",
+                "enum": ["Client", "Vendor", "Witness"]
+              },
+              "signature": {
+                "type": "object",
+                "properties": {
+                  "date": {"type": "string"},
+                  "location": {"type": "string"}
+                }
+              }
+            }
+          }
+        },
+        "effective_date": {"type": "string"},
+        "termination_date": {"type": "string"},
+        "clauses": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "clause_number": {"type": "string"},
+              "title": {"type": "string"},
+              "content": {"type": "string"},
+              "subclauses": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "subclause_number": {"type": "string"},
+                    "content": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+## Advanced Schema Techniques
+
+<CardGroup cols={2}>
+  <Card title="Reusable Components" icon="puzzle-piece">
+    Use $defs to create reusable schema components
+  </Card>
+  <Card title="Conditional Logic" icon="code-branch">
+    Implement if/then/else validation rules
+  </Card>
+  <Card title="Recursive Structures" icon="circle-nodes">
+    Handle nested data of arbitrary depth
+  </Card>
+  <Card title="Polymorphic Types" icon="object-group">
+    Support multiple data shapes with anyOf/oneOf
+  </Card>
+</CardGroup>
+
+### Using $defs for Reusability
+
+```json
+{
+  "$defs": {
+    "address": {
+      "type": "object",
+      "properties": {
+        "street": {"type": "string"},
+        "city": {"type": "string"},
+        "state": {"type": "string"},
+        "zip": {"type": "string"}
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "shipping_address": {"$ref": "#/$defs/address"},
+    "billing_address": {"$ref": "#/$defs/address"}
+  }
+}
+```
+
+### Conditional Fields
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "payment_method": {
+      "type": "string",
+      "enum": ["credit_card", "paypal"]
+    },
+    "credit_card_info": {
+      "type": "object",
+      "properties": {
+        "number": {"type": "string"},
+        "expiration": {"type": "string"}
+      },
+      "required": ["payment_method == 'credit_card'"]
+    },
+    "paypal_email": {
+      "type": "string",
+      "required": ["payment_method == 'paypal'"]
+    }
+  }
+}
+```
+
+### Recursive Structures
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "name": {"type": "string"},
+    "children": {
+      "type": "array",
+      "items": {"$ref": "#"}
+    }
+  }
+}
+```
+
+### Polymorphic Data
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "vehicle": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {"const": "car"},
+            "doors": {"type": "number"},
+            "transmission": {"type": "string"}
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {"const": "truck"},
+            "axles": {"type": "number"},
+            "capacity": {"type": "number"}
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+## Implementation Tips
+
+1. **Schema Organization:**
+   - Break down complex schemas into reusable components
+   - Use clear naming conventions for $defs
+   - Document relationships between schema parts
+
+2. **Validation Strategy:**
+   - Implement progressive validation
+   - Handle partial data gracefully
+   - Provide clear error messages
+
+3. **Performance Optimization:**
+   - Limit recursive depth
+   - Cache frequently used $refs
+   - Monitor validation time for large schemas
+
+<Note>
+  Complex schemas may require additional processing time. Consider breaking large documents into smaller, manageable sections.
+</Note>
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Testing" icon="vial">
+    Create comprehensive test cases for all schema variations
+  </Card>
+  <Card title="Documentation" icon="book">
+    Document schema structure and validation rules
+  </Card>
+  <Card title="Versioning" icon="code-branch">
+    Maintain backward compatibility with schema versions
+  </Card>
+  <Card title="Monitoring" icon="chart-line">
+    Track schema performance and validation errors
+  </Card>
+</CardGroup>
+
+<Check>
+  Remember to validate your schemas against real-world documents to ensure optimal extraction results.
+</Check>

@@ -1,0 +1,76 @@
+# API Endpoints
+
+## POST /process
+### Parameters:
+- **file**: PDF file to process *(required)*
+- **json_schema**: JSON schema defining the data structure to extract *(required)*
+
+### Response:
+Returns a JSON object containing the job ID and initial status:
+
+```json
+{
+    "job_id": "string",
+    "status": "PENDING",
+    "message": "PDF processing started"
+}
+```
+
+### Error Responses:
+- `400`: Invalid request
+  - File missing or invalid format
+  - JSON schema missing or invalid format
+- `413`: File too large
+- `429`: Rate limit exceeded
+- `500`: Server error
+
+## GET /jobs/{job_id}
+### Parameters:
+- **job_id**: The ID of the job to retrieve status for *(required, path parameter)*
+
+### Response:
+Returns the current status and results of the processing job:
+
+```json
+{
+    "id": "string",
+    "status": "string",
+    "result": {
+        "field": "value"
+    },
+    "error": "string",
+    "file_name": "string",
+    "created_at": "2024-03-21T12:00:00Z",
+    "updated_at": "2024-03-21T12:00:00Z"
+}
+```
+
+### Status Values:
+- `PENDING`: Job is queued for processing
+- `PROCESSING`: Job is currently being processed
+- `COMPLETED`: Job has finished successfully
+- `FAILED`: Job failed with an error
+
+### Error Responses:
+- `404`: Job not found
+- `403`: Not authorized to access this job
+- `500`: Server error
+
+## Rate Limits
+- Maximum file size: 50MB
+- Maximum requests per minute: 20
+- Maximum concurrent jobs: 10
+
+## Authentication
+All endpoints require Bearer token authentication. Include the token in the Authorization header:
+
+```bash
+Authorization: Bearer <your_api_token>
+```
+
+## Best Practices
+1. Always check the job status before requesting results
+2. Implement exponential backoff for polling job status
+3. Store the job_id for future reference
+4. Validate your JSON schema before submission
+5. Keep PDF files under 20MB for optimal processing speed

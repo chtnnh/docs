@@ -1,0 +1,125 @@
+---
+title: 'Basic Schema Examples'
+description: 'Simple schema patterns for common use cases'
+---
+
+## Simple Contact Form
+
+A basic example showing how to structure a contact form schema:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Full name of the contact"
+    },
+    "email": {
+      "type": "string",
+      "description": "Contact email address"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Contact phone number"
+    },
+    "preferred_contact_method": {
+      "type": "string",
+      "enum": [
+        "email",
+        "phone",
+        "text"
+      ]
+    }
+  }
+}
+```
+
+## E-commerce Order
+
+A more complex example showing nested objects and arrays:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "order_id": {
+      "type": "string",
+      "description": "Unique order identifier"
+    },
+    "customer": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "email": {"type": "string"},
+        "shipping_address": {
+          "type": "object",
+          "properties": {
+            "street": {"type": "string"},
+            "city": {"type": "string"},
+            "state": {"type": "string"},
+            "zip": {"type": "string"}
+          }
+        }
+      }
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "product_id": {"type": "string"},
+          "quantity": {"type": "number"},
+          "price": {"type": "number"}
+        }
+      }
+    },
+    "total": {
+      "type": "number",
+      "description": "Total order amount"
+    }
+  }
+}
+```
+
+## Schema Tips
+
+<CardGroup cols={2}>
+  <Card title="Validation" icon="check-circle">
+    Always include field descriptions and validation rules where applicable
+  </Card>
+  <Card title="Required Fields" icon="asterisk">
+    Mark essential fields as required to ensure data quality
+  </Card>
+  <Card title="Enums" icon="list">
+    Use enums to restrict field values to a specific set of options
+  </Card>
+  <Card title="Nesting" icon="layer-group">
+    Keep nesting depth reasonable for better processing performance
+  </Card>
+</CardGroup>
+
+<Note>
+  For more complex schema patterns, check out our [Advanced Examples](/schemas/advanced-examples) section.
+</Note>
+
+## Best Practices
+
+1. **Field Naming:**
+   - Use clear, descriptive names
+   - Follow consistent naming conventions
+   - Avoid special characters
+
+2. **Data Types:**
+   - Choose appropriate types for each field
+   - Use string formats for specialized data (email, date, etc.)
+   - Consider data validation requirements
+
+3. **Documentation:**
+   - Add descriptions for all fields
+   - Include examples of valid values
+   - Document any special handling requirements
+
+<Check>
+  Remember to test your schemas with sample PDFs to ensure optimal extraction results.
+</Check>

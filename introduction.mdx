@@ -1,71 +1,118 @@
 ---
-title: Introduction
-description: "Welcome to the home of your new documentation"
+title: 'Introduction'
+description: 'Overview of the PDF Vision API'
 ---
 
-<img
-  className="block dark:hidden"
-  src="/images/hero-light.png"
-  alt="Hero Light"
-/>
-<img
-  className="hidden dark:block"
-  src="/images/hero-dark.png"
-  alt="Hero Dark"
-/>
+## Overview
+The PDF Vision API enables the extraction of structured data from PDF documents. The API processes PDF files by:
+1. Converting PDF pages to images.
+2. Analyzing each image using the Vision API.
+3. Extracting data based on a user-defined JSON schema.
+4. Consolidating results across all pages.
 
-## Setting up
-
-The first step to world-class documentation is setting up your editing environments.
+## Key Features
 
 <CardGroup cols={2}>
-  <Card
-    title="Edit Your Docs"
-    icon="pen-to-square"
-    href="https://mintlify.com/docs/quickstart"
-  >
-    Get your docs set up locally for easy development
+  <Card title="PDF Processing" icon="file-pdf">
+    Validates input PDFs and processes multi-page documents
   </Card>
-  <Card
-    title="Preview Changes"
-    icon="image"
-    href="https://mintlify.com/docs/development"
-  >
-    Preview your changes before you push to make sure they're perfect
+  <Card title="Schema Validation" icon="check-square">
+    Enforces schema constraints on extracted data
+  </Card>
+  <Card title="Cross-page Merging" icon="object-group">
+    Intelligently merges results across multiple pages
+  </Card>
+  <Card title="Output Validation" icon="shield-check">
+    Validates final output against the defined schema
   </Card>
 </CardGroup>
 
-## Make it yours
+## API Endpoints
 
-Update your docs to your brand and add valuable content for the best user conversion.
+### POST /process
 
-<CardGroup cols={2}>
-  <Card
-    title="Customize Style"
-    icon="palette"
-    href="https://mintlify.com/docs/settings/global"
-  >
-    Customize your docs to your company's colors and brands
-  </Card>
-  <Card
-    title="Reference APIs"
-    icon="code"
-    href="https://mintlify.com/docs/api-playground/openapi"
-  >
-    Automatically generate endpoints from an OpenAPI spec
-  </Card>
-  <Card
-    title="Add Components"
-    icon="screwdriver-wrench"
-    href="https://mintlify.com/docs/content/components/accordions"
-  >
-    Build interactive features and designs to guide your users
-  </Card>
-  <Card
-    title="Get Inspiration"
-    icon="stars"
-    href="https://mintlify.com/customers"
-  >
-    Check out our showcase of our favorite documentation
-  </Card>
-</CardGroup>
+Process a PDF document for data extraction.
+
+#### Parameters
+
+<ParamField body="file" type="file" required>
+  PDF file to process
+</ParamField>
+
+<ParamField body="json_schema" type="object" required>
+  JSON schema defining the data structure to extract
+</ParamField>
+
+#### Response
+
+```json
+{
+  "job_id": "string",
+  "status": "PENDING",
+  "message": "PDF processing started"
+}
+```
+
+### GET /jobs/{job_id}
+
+Retrieve the status and results of a processing job.
+
+#### Parameters
+
+<ParamField path="job_id" type="string" required>
+  The ID of the job to retrieve status for
+</ParamField>
+
+#### Response
+
+```json
+{
+  "id": "string",
+  "user_id": "string",
+  "status": "string",
+  "result": {
+    "field": "value"
+  },
+  "error": "string",
+  "file_name": "string",
+  "file_type": "string",
+  "created_at": "2024-03-21T12:00:00Z",
+  "updated_at": "2024-03-21T12:00:00Z"
+}
+```
+
+#### Status Values
+
+<ResponseField name="PENDING" type="string">
+  Job is queued for processing
+</ResponseField>
+
+<ResponseField name="PROCESSING" type="string">
+  Job is currently being processed
+</ResponseField>
+
+<ResponseField name="COMPLETED" type="string">
+  Job has finished successfully
+</ResponseField>
+
+<ResponseField name="FAILED" type="string">
+  Job failed with an error
+</ResponseField>
+
+#### Error Responses
+
+<ResponseField name="404" type="error">
+  Job not found
+</ResponseField>
+
+<ResponseField name="403" type="error">
+  Not authorized to access this job
+</ResponseField>
+
+<ResponseField name="500" type="error">
+  Server error
+</ResponseField>
+
+<Card title="View Schema Examples" icon="code" href="/schemas/basic-examples">
+  Explore example schemas for different use cases
+</Card>

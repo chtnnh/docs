@@ -1,0 +1,213 @@
+---
+title: 'Schema Definition'
+description: 'JSON Schema specifications and examples for the PDF Vision API'
+---
+
+## Overview
+
+The PDF Vision API uses JSON Schema Draft 7 specifications with additional enhancements for defining data extraction templates.
+
+## Basic Schema Structure
+
+```json
+{
+"type": "object",
+"properties": {
+"field_name": {
+"type": "field_type",
+"description": "Field description"
+}
+},
+"required": ["field_name"],
+"additionalProperties": false
+}
+```
+
+## Supported Field Types
+
+<CardGroup cols={2}>
+  <Card title="String" icon="font">
+    Text data extracted from the document
+  </Card>
+  <Card title="Number" icon="calculator">
+    Numeric values and measurements
+  </Card>
+  <Card title="Boolean" icon="toggle-on">
+    True/False values
+  </Card>
+  <Card title="Array" icon="list">
+    Lists of items or repeated data
+  </Card>
+  <Card title="Object" icon="cube">
+    Nested data structures
+  </Card>
+</CardGroup>
+
+## Schema Enhancements
+
+The API automatically applies several enhancements to your schema:
+
+- Adds `additionalProperties: false` to prevent unexpected fields
+- Includes specified fields in `required` array
+- Validates nested structure consistency
+- Provides detailed validation error messages
+
+## Advanced Schema Techniques
+
+### Using $defs for Reusability
+
+```json:api-reference/schemas.mdx
+{
+"type": "object",
+"$defs": {
+"address": {
+"type": "object",
+"properties": {
+"street": { "type": "string" },
+"city": { "type": "string" },
+"state": { "type": "string" },
+"zip": { "type": "string" }
+}
+}
+},
+"properties": {
+"billing_address": { "$ref": "#/$defs/address" },
+"shipping_address": { "$ref": "#/$defs/address" }
+}
+}
+```
+
+### Conditional Fields
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "payment_type": {
+      "type": "string",
+      "enum": ["credit_card", "bank_transfer"]
+    },
+    "credit_card_number": {
+      "type": "string",
+      "pattern": "^[0-9]{16}$"
+    },
+    "bank_account": {
+      "type": "string"
+    }
+  },
+  "required": ["payment_type"],
+  "if": {
+    "properties": { "payment_type": { "const": "credit_card" } }
+  },
+  "then": {
+    "required": ["credit_card_number"]
+  },
+  "else": {
+    "required": ["bank_account"]
+  }
+}
+```
+
+## Schema Validation Tips
+
+1. **Test with Sample Data:**
+   - Create test cases for all possible scenarios
+   - Include edge cases and invalid data
+   - Verify error messages are helpful
+
+2. **Use Schema Linters:**
+   - Validate schema structure
+   - Check for common mistakes
+   - Ensure proper JSON Schema syntax
+
+3. **Document Constraints:**
+   - Add comments explaining complex rules
+   - Include examples of valid/invalid data
+   - Document any special handling requirements
+
+4. **Performance Considerations:**
+   - Avoid deeply nested structures (max 5 levels recommended)
+   - Limit array sizes where possible
+   - Use simple types for frequently accessed fields
+   - Consider indexing requirements
+
+## Schema Evolution Best Practices
+
+### Version Control
+- Maintain schema versions in source control
+- Use semantic versioning (major.minor.patch)
+- Document breaking changes
+
+### Backward Compatibility
+- Add new fields rather than modifying existing ones
+- Mark deprecated fields with `x-deprecated`
+- Provide migration guides for major versions
+
+### Validation Rules
+- Use `oneOf` for alternative structures
+- Include schema version in the root object
+- Define clear validation error messages
+
+### Documentation
+- Maintain changelog for schema changes
+- Document migration paths
+- Include examples for each version
+
+<Note>
+  When evolving schemas, always consider the impact on existing integrations and provide adequate migration periods for breaking changes.
+</Note>
+
+## Common Use Cases
+
+### Form Data Extraction
+```json
+{
+  "type": "object",
+  "properties": {
+    "form_id": { "type": "string" },
+    "submission_date": { "type": "string", "format": "date" },
+    "fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": { "type": "string" },
+          "value": { "type": "string" },
+          "type": {
+            "type": "string",
+            "enum": ["text", "number", "date", "checkbox"]
+          }
+        },
+        "required": ["label", "value", "type"]
+      }
+    }
+  },
+  "required": ["form_id", "submission_date", "fields"]
+}
+```
+
+### Table Extraction
+```json
+{
+  "type": "object",
+  "properties": {
+    "table_name": { "type": "string" },
+    "headers": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": { "type": "string" }
+      }
+    }
+  },
+  "required": ["table_name", "headers", "rows"]
+}
+```
+
+<Card title="View Schema Examples" icon="code" href="/schemas/basic-examples">
+  Explore practical examples of schemas for different use cases
+</Card>

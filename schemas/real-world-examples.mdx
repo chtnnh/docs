@@ -1,0 +1,202 @@
+---
+title: 'Real-world Schema Examples'
+description: 'Production-ready schema examples from various industries'
+---
+
+## Medical Record Schema
+
+A comprehensive schema for processing medical records:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "patient": {
+      "type": "object",
+      "properties": {
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "dob": {"type": "string"},
+        "contact_info": {
+          "type": "object",
+          "properties": {
+            "phone": {"type": "string"},
+            "email": {"type": "string"}
+          }
+        }
+      }
+    },
+    "visits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "date": {"type": "string"},
+          "provider": {"type": "string"},
+          "diagnosis": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {"type": "string"},
+                "description": {"type": "string"}
+              }
+            }
+          },
+          "medications": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {"type": "string"},
+                "dosage": {"type": "string"},
+                "frequency": {"type": "string"}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+## E-commerce Product Catalog
+
+A schema for managing product catalogs:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "products": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "description": {"type": "string"},
+          "price": {"type": "number"},
+          "inventory": {
+            "type": "object",
+            "properties": {
+              "stock": {"type": "number"},
+              "locations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "warehouse": {"type": "string"},
+                    "quantity": {"type": "number"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+## Financial Transaction
+
+A schema for processing financial documents:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "transaction_id": {"type": "string"},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "amount": {"type": "number"},
+    "currency": {"type": "string"},
+    "parties": {
+      "type": "object",
+      "properties": {
+        "sender": {"$ref": "#/$defs/party"},
+        "receiver": {"$ref": "#/$defs/party"}
+      }
+    }
+  },
+  "$defs": {
+    "party": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "account": {"type": "string"},
+        "institution": {"type": "string"}
+      }
+    }
+  }
+}
+```
+
+## Industry-Specific Considerations
+
+<CardGroup cols={2}>
+  <Card title="Healthcare" icon="hospital">
+    - HIPAA compliance requirements
+    - Standardized medical codes
+    - Patient data privacy
+  </Card>
+  <Card title="Financial" icon="money-bill">
+    - Transaction accuracy
+    - Currency handling
+    - Audit trail requirements
+  </Card>
+  <Card title="Legal" icon="scale-balanced">
+    - Document versioning
+    - Signature verification
+    - Clause relationships
+  </Card>
+  <Card title="Academic" icon="graduation-cap">
+    - Citation formats
+    - Research metadata
+    - Figure extraction
+  </Card>
+</CardGroup>
+
+## Implementation Tips
+
+1. **Data Validation:**
+   - Implement industry-specific validation rules
+   - Verify required field presence
+   - Check data format consistency
+
+2. **Error Handling:**
+   - Provide detailed error messages
+   - Log validation failures
+   - Implement fallback options
+
+3. **Performance Optimization:**
+   - Balance schema complexity with processing speed
+   - Consider caching frequently used data
+   - Optimize nested structure depth
+
+<Note>
+  These examples represent common production use cases. Adapt them to your specific needs while maintaining data extraction accuracy.
+</Note>
+
+## Best Practices for Production
+
+### Security Considerations
+- Implement field-level encryption for sensitive data
+- Follow industry compliance requirements
+- Regular security audits
+
+### Scalability
+- Design schemas for future expansion
+- Consider data volume implications
+- Plan for schema versioning
+
+### Monitoring
+- Track extraction success rates
+- Monitor processing times
+- Log validation errors
+
+<Check>
+  Always test your schemas thoroughly with real-world documents before deploying to production.
+</Check>

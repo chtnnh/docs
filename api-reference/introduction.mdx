@@ -1,33 +1,58 @@
 ---
 title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+description: 'Overview of the PDF Vision API'
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+## Welcome to the PDF Vision API
 
-## Welcome
+The PDF Vision API enables the extraction of structured data from PDF documents using computer vision and machine learning techniques. The API processes PDF files through a multi-step pipeline:
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+1. Converting PDF pages to images
+2. Analyzing each image using the Vision API
+3. Extracting data based on a user-defined JSON schema
+4. Consolidating results across all pages
 
 <Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
+  title="View Schema Examples"
+  icon="code"
+  href="/schemas/basic-examples"
 >
-  View the OpenAPI specification file
+  Explore example schemas for common use cases
 </Card>
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="PDF Processing" icon="file-pdf">
+    Handles multi-page PDFs with automatic page segmentation and analysis
+  </Card>
+  <Card title="Schema Validation" icon="check-square">
+    Validates both input schemas and extracted data against defined constraints
+  </Card>
+  <Card title="Cross-page Merging" icon="object-group">
+    Intelligently combines data from multiple pages into a single coherent structure
+  </Card>
+  <Card title="Error Handling" icon="triangle-exclamation">
+    Provides detailed error messages and validation feedback
+  </Card>
+</CardGroup>
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+All API endpoints require authentication using Bearer tokens. Include your API token in the Authorization header:
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+```bash
+Authorization: Bearer your_api_token_here
 ```
+
+<Note>
+  Keep your API tokens secure and never expose them in client-side code or public repositories.
+</Note>
+
+## Rate Limits
+
+- Maximum file size: 50MB
+- Maximum requests per minute: 20
+- Maximum concurrent jobs: 10
+
+For higher limits, please contact our [support team](mailto:support@example.com).
