@@ -11,15 +11,17 @@ The PDF Vision API uses JSON Schema Draft 7 specifications with additional enhan
 
 ```json
 {
-"type": "object",
-"properties": {
-"field_name": {
-"type": "field_type",
-"description": "Field description"
-}
-},
-"required": ["field_name"],
-"additionalProperties": false
+  "type": "object",
+  "properties": {
+    "field_name": {
+      "type": "field_type",
+      "description": "Field description"
+    }
+  },
+  "required": [
+    "field_name"
+  ],
+  "additionalProperties": false
 }
 ```
 
@@ -58,22 +60,22 @@ The API automatically applies several enhancements to your schema:
 
 ```json:api-reference/schemas.mdx
 {
-"type": "object",
-"$defs": {
-"address": {
-"type": "object",
-"properties": {
-"street": { "type": "string" },
-"city": { "type": "string" },
-"state": { "type": "string" },
-"zip": { "type": "string" }
-}
-}
-},
-"properties": {
-"billing_address": { "$ref": "#/$defs/address" },
-"shipping_address": { "$ref": "#/$defs/address" }
-}
+  "type": "object",
+  "$defs": {
+    "address": {
+      "type": "object",
+      "properties": {
+        "street": { "type": "string" },
+        "city": { "type": "string" },
+        "state": { "type": "string" },
+        "zip": { "type": "string" }
+      }
+    }
+  },
+  "properties": {
+    "billing_address": { "$ref": "#/$defs/address" },
+    "shipping_address": { "$ref": "#/$defs/address" }
+  }
 }
 ```
 
