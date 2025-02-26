@@ -13,9 +13,7 @@
   "paths": {
     "/api/v1/vision/process": {
       "post": {
-        "tags": [
-          "PDF Vision"
-        ],
+        "tags": ["PDF Vision"],
         "summary": "Process Pdf",
         "description": "Start PDF processing job and return job ID",
         "operationId": "process_pdf_api_v1_vision_process_post",
@@ -27,19 +25,7 @@
               }
             }
           },
-          "required": true,
-          "x-mintlify-override": {
-            "type": "multipart/form-data",
-            "properties": {
-              "file": {
-                "type": "string",
-                "format": "binary"
-              },
-              "json_schema": {
-                "type": "string"
-              }
-            }
-          }
+          "required": true
         },
         "responses": {
           "200": {
@@ -69,10 +55,94 @@
           }
         ]
       }
+    },
+    "/api/v1/vision/jobs/{job_id}": {
+      "get": {
+        "tags": ["PDF Vision"],
+        "summary": "Get Job Status",
+        "description": "Get the status of a specific job",
+        "operationId": "get_job_status_api_v1_vision_jobs__job_id__get",
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "The ID of the job to get"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobStatusResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health Check",
+        "description": "Health check endpoint with rate limiting",
+        "operationId": "health_check_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ]
+      }
     }
   },
   "components": {
     "schemas": {
+      "Body_process_pdf_api_v1_vision_process_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          },
+          "json_schema": {
+            "type": "string",
+            "title": "Json Schema"
+          }
+        },
+        "type": "object",
+        "required": ["file", "json_schema"],
+        "title": "Body_process_pdf_api_v1_vision_process_post"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -102,11 +172,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "job_id",
-          "status",
-          "message"
-        ],
+        "required": ["job_id", "status", "message"],
         "title": "JobResponse"
       },
       "JobStatusResponse": {
@@ -165,15 +231,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "id",
-          "user_id",
-          "status",
-          "file_name",
-          "file_type",
-          "created_at",
-          "updated_at"
-        ],
+        "required": ["id", "user_id", "status", "file_name", "file_type", "created_at", "updated_at"],
         "title": "JobStatusResponse"
       },
       "ValidationError": {
@@ -202,11 +260,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "loc",
-          "msg",
-          "type"
-        ],
+        "required": ["loc", "msg", "type"],
         "title": "ValidationError"
       }
     },
