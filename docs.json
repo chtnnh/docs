@@ -33,8 +33,7 @@
             "group": "Endpoints",
             "openapi": {
               "source": "api-reference/openapi.json",
-              "directory": "api-reference",
-              "baseUrl": "https://v3.ocr.unsiloed-ai.com"
+              "directory": "api-reference"
             }
           },
           {
