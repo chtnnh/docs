@@ -8,6 +8,9 @@
     "dark": "#15803D"
   },
   "favicon": "/favicon.svg",
+  "api": {
+    "baseUrl": "https://v3.ocr.unsiloed-ai.com"
+  },
   "navigation": {
     "tabs": [
       {
@@ -15,7 +18,7 @@
         "groups": [
           {
             "group": "Getting Started",
-          "pages": [
+            "pages": [
               "introduction"
             ]
           },
