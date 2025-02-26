@@ -33,13 +33,7 @@
             "group": "Endpoints",
             "openapi": {
               "source": "api-reference/openapi.json",
-              "directory": "api-reference",
-              "servers": [
-                {
-                  "url": "https://v3.ocr.unsiloed-ai.com/api",
-                  "description": "Production Server"
-                }
-              ]
+              "directory": "api-reference"
             }
           },
           {
