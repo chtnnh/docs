@@ -5,7 +5,62 @@ description: 'JSON Schema specifications and examples for the PDF Vision API'
 
 ## Overview
 
-The PDF Vision API uses JSON Schema Draft 7 specifications with additional enhancements for defining data extraction templates.
+## Overview
+
+The **PDF Vision API** provides a powerful way to extract structured data from PDF documents using **JSON Schema Draft 7**. JSON Schema allows developers to define a clear structure for the extracted data, ensuring consistency, validation, and reusability.
+
+## Instructions for Populating a JSON Schema
+
+To define a schema for the **PDF Vision API**, follow these steps:
+
+1. **Define the Root Object**  
+   - Start with a JSON object as the root structure.  
+   - Use the `type` property to specify `"object"`.
+
+2. **Define Fields Using Properties**  
+   - Add a `properties` section to define key-value pairs that correspond to the fields you want to extract.  
+   - Each *property name* should match the field name, and each *property value* is an object describing its characteristics.  
+   - Within each property, specify its `type` (e.g., `string`, `number`, `boolean`, `object`, `array`) and any validation constraints (e.g., `enum`, `pattern`).  
+   - Include a `description` for each field to clarify its purpose and expected data.
+
+
+3. **Set Required Fields**  
+   - Use the `required` array to list fields that must be present in the extracted data.
+
+4. **Restrict Unexpected Fields**  
+   - Set `additionalProperties: false` to disallow fields that are not explicitly defined.
+
+5. **Define Constraints for Validation**  
+   - Use `pattern` for fields that require a specific format (e.g., date, email).  
+   - Use `enum` for fields that accept only predefined values.  
+   - Utilize `format` for standard formats like `date` or `uri`.
+
+6. **Use Nested Structures for Complex Data**  
+   - Use objects within `properties` to define nested structures.  
+   - Implement reusable components using `$defs` and `$ref`.
+
+7. **Apply Conditional Logic for Dynamic Fields**  
+   - Use `if`, `then`, and `else` to enforce conditional validation rules based on the values of other fields.
+   
+
+## Basic Schema Structure
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "field_name": {
+      "type": "field_type",
+      "description": "Field description"
+    }
+  },
+  "required": [
+    "field_name"
+  ],
+  "additionalProperties": false
+}
+
+
 
 ## Basic Schema Structure
 
