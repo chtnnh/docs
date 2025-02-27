@@ -9,7 +9,8 @@
   },
   "favicon": "/favicon.svg",
   "api": {
-    "baseUrl": "https://v3.ocr.unsiloed-ai.com"
+    "baseUrl": "https://v3.ocr.unsiloed-ai.com",
+    "playground": false
   },
   "navigation": {
     "tabs": [
