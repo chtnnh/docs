@@ -77,5 +77,10 @@
       "github": "https://github.com/unsiloed-ai",
       "linkedin": "https://linkedin.com/company/unsiloed-ai"
     }
+  },
+  "api": {
+    "playground": {
+      "display": "none"
+    }
   }
 }
