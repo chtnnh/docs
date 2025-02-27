@@ -5,8 +5,6 @@ description: 'JSON Schema specifications and examples for the PDF Vision API'
 
 ## Overview
 
-## Overview
-
 The **PDF Vision API** provides a powerful way to extract structured data from PDF documents using **JSON Schema Draft 7**. JSON Schema allows developers to define a clear structure for the extracted data, ensuring consistency, validation, and reusability.
 
 ## Instructions for Populating a JSON Schema
@@ -60,17 +58,21 @@ To define a schema for the **PDF Vision API**, follow these steps:
   "additionalProperties": false
 }
 
+## High-Level Simplified Schema Description Template
 
-
-## Basic Schema Structure
+Below is a minimal JSON Schema outline you can adapt to your specific data extraction needs:
 
 ```json
 {
   "type": "object",
   "properties": {
     "field_name": {
-      "type": "field_type",
-      "description": "Field description"
+      "type": "string",
+      "description": "Brief explanation of what this field represents"
+    },
+    "another_field": {
+      "type": "number",
+      "description": "Description of another field that may hold numeric values"
     }
   },
   "required": [
@@ -78,7 +80,61 @@ To define a schema for the **PDF Vision API**, follow these steps:
   ],
   "additionalProperties": false
 }
-```
+
+
+## Example: Invoice Extraction Schema (Simplified)
+
+Below is a streamlined JSON Schema for extracting key fields from an invoice:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "invoice_number": {
+      "type": "string",
+      "description": "Unique identifier for the invoice"
+    },
+    "invoice_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Invoice issue date (YYYY-MM-DD)"
+    },
+    "customer_name": {
+      "type": "string",
+      "description": "Full name of the customer"
+    },
+    "line_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Brief name or description of the item"
+          },
+          "quantity": {
+            "type": "number",
+            "description": "Number of units purchased"
+          },
+          "price": {
+            "type": "number",
+            "description": "Price per unit"
+          }
+        },
+        "required": ["description", "quantity", "price"]
+      }
+    },
+    "total_amount": {
+      "type": "number",
+      "description": "Total invoice amount after summing all items"
+    }
+  },
+  "required": ["invoice_number", "invoice_date", "customer_name", "line_items", "total_amount"],
+  "additionalProperties": false
+}
+
+
+
 
 ## Supported Field Types
 
