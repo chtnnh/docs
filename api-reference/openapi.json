@@ -19,6 +19,7 @@
         "summary": "Process Pdf",
         "description": "Start PDF processing job and return job ID",
         "operationId": "process_pdf_api_v1_vision_process_post",
+        "x-mintlify-try-it": false,
         "requestBody": {
           "content": {
             "multipart/form-data": {
