@@ -4,6 +4,9 @@
     "title": "Unified File Processing API",
     "version": "1.0.0"
   },
+  "x-mintlify": {
+    "hideTryIt": true
+  },
   "servers": [
     {
       "url": "https://v3.ocr.unsiloed-ai.com",
